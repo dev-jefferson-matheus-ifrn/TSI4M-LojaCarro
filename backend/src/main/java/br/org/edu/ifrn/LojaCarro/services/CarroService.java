@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,9 +17,13 @@ public class CarroService {
     @Autowired
     public CarroRepository carroRepository;
 
+    @Autowired
+    private LogService logService;
+
     public Carro save(Carro c) {
         validarModelo(c.getModelo());  // Valida o modelo antes de salvar
         validarPreco(c.getPreco());
+        logService.registarLog(LocalDate.now(), "INSERT", 1);
         return carroRepository.save(c);
     }
 
@@ -35,6 +40,7 @@ public class CarroService {
         if(id <= 0){
             throw new CarroException("O ID do carro não pode ser negativo. ID fornecido: " + id);
         }
+        logService.registarLog(LocalDate.now(), "SELECT", 1);
         return carroRepository.findById(id);
     }
 
@@ -45,11 +51,13 @@ public class CarroService {
 
     public Optional<Carro> findByModelo(String modelo) {
         validarModelo(modelo);
+        logService.registarLog(LocalDate.now(), "SELECT", 1);
         return carroRepository.findFirstByModelo(modelo);
     }
 
     public Carro saveFromLegacy(String modelo, double preco) {
         Carro carro = new Carro(modelo, LocalDate.now().getYear(), preco);
+        logService.registarLog(LocalDate.now(), "INSERT", 1);
         return save(carro);
     }
 
@@ -57,12 +65,14 @@ public class CarroService {
         Carro carro = localizarCarroPorModelo(modelo);
         validarPreco(preco);
         carro.setPreco(preco);
+        logService.registarLog(LocalDate.now(), "UPDATE", 1);
         return carroRepository.save(carro);
     }
 
     public Carro deleteByModelo(String modelo) {
         Carro carro = localizarCarroPorModelo(modelo);
         carroRepository.delete(carro);
+        logService.registarLog(LocalDate.now(), "DELETE", 1);
         return carro;
     }
 
