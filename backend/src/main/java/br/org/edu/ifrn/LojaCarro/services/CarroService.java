@@ -23,7 +23,7 @@ public class CarroService {
     public Carro save(Carro c) {
         validarModelo(c.getModelo());  // Valida o modelo antes de salvar
         validarPreco(c.getPreco());
-        logService.registarLog(LocalDate.now(), "INSERT", 1);
+        logService.registarLog(LocalDate.now(), "INSERT", Long.valueOf(1));
         return carroRepository.save(c);
     }
 
@@ -32,6 +32,7 @@ public class CarroService {
         if(id <= 0){
             throw new CarroException("O ID do carro não pode ser negativo. ID fornecido: " + id);
         }
+        logService.registarLog(LocalDate.now(), "INSERT", Long.valueOf(1));
         carroRepository.deleteById(id);
     }
 
@@ -40,7 +41,7 @@ public class CarroService {
         if(id <= 0){
             throw new CarroException("O ID do carro não pode ser negativo. ID fornecido: " + id);
         }
-        logService.registarLog(LocalDate.now(), "SELECT", 1);
+        logService.registarLog(LocalDate.now(), "SELECT", Long.valueOf(1));
         return carroRepository.findById(id);
     }
 
@@ -51,13 +52,13 @@ public class CarroService {
 
     public Optional<Carro> findByModelo(String modelo) {
         validarModelo(modelo);
-        logService.registarLog(LocalDate.now(), "SELECT", 1);
+        logService.registarLog(LocalDate.now(), "SELECT", Long.valueOf(1));
         return carroRepository.findFirstByModelo(modelo);
     }
 
     public Carro saveFromLegacy(String modelo, double preco) {
         Carro carro = new Carro(modelo, LocalDate.now().getYear(), preco);
-        logService.registarLog(LocalDate.now(), "INSERT", 1);
+        logService.registarLog(LocalDate.now(), "INSERT", Long.valueOf(1));
         return save(carro);
     }
 
@@ -65,14 +66,14 @@ public class CarroService {
         Carro carro = localizarCarroPorModelo(modelo);
         validarPreco(preco);
         carro.setPreco(preco);
-        logService.registarLog(LocalDate.now(), "UPDATE", 1);
+        logService.registarLog(LocalDate.now(), "UPDATE", Long.valueOf(1));
         return carroRepository.save(carro);
     }
 
     public Carro deleteByModelo(String modelo) {
         Carro carro = localizarCarroPorModelo(modelo);
         carroRepository.delete(carro);
-        logService.registarLog(LocalDate.now(), "DELETE", 1);
+        logService.registarLog(LocalDate.now(), "DELETE", Long.valueOf(1));
         return carro;
     }
 
@@ -86,6 +87,7 @@ public class CarroService {
         }
         validarModelo(c.getModelo());  // Valida o modelo antes de atualizar
         validarPreco(c.getPreco());
+        logService.registarLog(LocalDate.now(), "UPDATE", Long.valueOf(1));
         return carroRepository.save(c);  // Retorna o carro salvo para feedback
     }
 

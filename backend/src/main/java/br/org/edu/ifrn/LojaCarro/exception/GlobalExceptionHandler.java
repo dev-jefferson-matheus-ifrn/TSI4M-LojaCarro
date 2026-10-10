@@ -1,6 +1,7 @@
 package br.org.edu.ifrn.LojaCarro.exception;
 
 import br.org.edu.ifrn.LojaCarro.CarroException;
+import br.org.edu.ifrn.LojaCarro.UsuarioException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,6 +15,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CarroException.class)
     public ResponseEntity<Map<String, String>> handleCarroException(CarroException ex) {
         Map<String, String> body = new HashMap<>();
+        body.put("erro", ex.getMessage());
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> hadleUsuarioExeception(UsuarioException ex) {
+        Map<String,String> body = new HashMap<>();
         body.put("erro", ex.getMessage());
         return ResponseEntity.badRequest().body(body);
     }
