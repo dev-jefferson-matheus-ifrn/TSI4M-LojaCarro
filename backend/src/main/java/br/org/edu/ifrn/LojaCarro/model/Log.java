@@ -3,7 +3,7 @@ package br.org.edu.ifrn.LojaCarro.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "tb_log_operacoes")
@@ -21,10 +21,16 @@ public class Log {
     @Column(nullable = false)
     private Long idUsuario;
 
-    public Log(LocalDate dataOperacao, String operacaoRealizada, Long idUsuario) {
+    @Column(nullable = false)
+    private String url;
+
+    public Log(){}
+
+    public Log(LocalDate dataOperacao, String operacaoRealizada, Long idUsuario, String url) {
         this.dataOperacao = dataOperacao;
         this.operacaoRealizada = operacaoRealizada;
         this.idUsuario = idUsuario;
+        this.url = url;
     }
 
     public Long getId() {
@@ -35,11 +41,11 @@ public class Log {
         this.id = id;
     }
 
-    public Date getDataOperacao() {
+    public LocalDate getDataOperacao() {
         return dataOperacao;
     }
 
-    public void setDataOperacao(Date dataOperacao) {
+    public void setDataOperacao(LocalDate dataOperacao) {
         this.dataOperacao = dataOperacao;
     }
 

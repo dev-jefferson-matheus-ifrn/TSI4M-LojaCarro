@@ -23,7 +23,13 @@ public class CarroService {
     public Carro save(Carro c) {
         validarModelo(c.getModelo());  // Valida o modelo antes de salvar
         validarPreco(c.getPreco());
-        logService.registarLog(LocalDate.now(), "INSERT", Long.valueOf(1));
+        StringBuilder operacao = new StringBuilder("INSERT NEW CARRO: ");
+        operacao.append(c.getModelo());
+        operacao.append(',');
+        operacao.append(c.getAno());
+        operacao.append(',');
+        operacao.append(c.getPreco());
+        logService.registarLog(LocalDate.now(), operacao.toString(), Long.valueOf(1), "http://localhost:8080/carro/salvar");
         return carroRepository.save(c);
     }
 
@@ -32,7 +38,10 @@ public class CarroService {
         if(id <= 0){
             throw new CarroException("O ID do carro não pode ser negativo. ID fornecido: " + id);
         }
-        logService.registarLog(LocalDate.now(), "INSERT", Long.valueOf(1));
+        StringBuilder operacao = new StringBuilder("DELETE CARRO WHERE ID = ");
+        operacao.append(id);
+
+        logService.registarLog(LocalDate.now(), operacao.toString(), Long.valueOf(1),"http://localhost:8080/carro/" + id);
         carroRepository.deleteById(id);
     }
 
@@ -41,24 +50,25 @@ public class CarroService {
         if(id <= 0){
             throw new CarroException("O ID do carro não pode ser negativo. ID fornecido: " + id);
         }
-        logService.registarLog(LocalDate.now(), "SELECT", Long.valueOf(1));
+        StringBuilder operacao = new StringBuilder("SELECT CARRO WHERE ID = ");
+        operacao.append(id);
+        logService.registarLog(LocalDate.now(), operacao.toString(), Long.valueOf(1),"http://localhost:8080/carro/" + id);
         return carroRepository.findById(id);
     }
 
     // Novo método para listar todos os carros
     public List<Carro> findAll() {
+        logService.registarLog(LocalDate.now(), "SELECT ALL CARROS", Long.valueOf(1),"http://localhost:8080/carro/listarCarros");
         return carroRepository.findAll();
     }
 
     public Optional<Carro> findByModelo(String modelo) {
         validarModelo(modelo);
-        logService.registarLog(LocalDate.now(), "SELECT", Long.valueOf(1));
         return carroRepository.findFirstByModelo(modelo);
     }
 
     public Carro saveFromLegacy(String modelo, double preco) {
         Carro carro = new Carro(modelo, LocalDate.now().getYear(), preco);
-        logService.registarLog(LocalDate.now(), "INSERT", Long.valueOf(1));
         return save(carro);
     }
 
@@ -66,14 +76,12 @@ public class CarroService {
         Carro carro = localizarCarroPorModelo(modelo);
         validarPreco(preco);
         carro.setPreco(preco);
-        logService.registarLog(LocalDate.now(), "UPDATE", Long.valueOf(1));
         return carroRepository.save(carro);
     }
 
     public Carro deleteByModelo(String modelo) {
         Carro carro = localizarCarroPorModelo(modelo);
         carroRepository.delete(carro);
-        logService.registarLog(LocalDate.now(), "DELETE", Long.valueOf(1));
         return carro;
     }
 
@@ -87,7 +95,15 @@ public class CarroService {
         }
         validarModelo(c.getModelo());  // Valida o modelo antes de atualizar
         validarPreco(c.getPreco());
-        logService.registarLog(LocalDate.now(), "UPDATE", Long.valueOf(1));
+        StringBuilder operacao = new StringBuilder("UPADATE CARRO: ");
+        operacao.append(c.getModelo());
+        operacao.append(',');
+        operacao.append(c.getAno());
+        operacao.append(',');
+        operacao.append(c.getPreco());
+        operacao.append(" WHERE ID = ");
+        operacao.append(c.getId());
+        logService.registarLog(LocalDate.now(), operacao.toString(), Long.valueOf(1),"http://localhost:8080/carro/" + c.getId());
         return carroRepository.save(c);  // Retorna o carro salvo para feedback
     }
 

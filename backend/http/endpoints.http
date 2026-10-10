@@ -1,0 +1,58 @@
+###
+GET http://localhost:8080/carro/listarCarros
+
+###
+POST http://localhost:8080/carro/salvar
+Content-Type: application/json
+
+{
+  "modelo": "bmww",
+  "ano": 2026,
+  "preco": 150000
+}
+
+###
+PUT http://localhost:8080/carro/2
+Content-Type: application/json
+
+{
+  "modelo": "bmw",
+  "ano": 2020,
+  "preco": 150000
+}
+
+###
+DELETE http://localhost:8080/carro/1
+
+###
+GET http://localhost:8080/carro/1
+
+
+###
+GET http://localhost:8080/usuarios/listarUsuarios
+
+###
+POST http://localhost:8080/usuarios/salvar
+Content-Type: application/json
+
+{
+  "nome": "Jefferson Matheus",
+  "email": "email@teste.com.br",
+  "cargo": "Suporte Tecnico 1"
+}
+
+###
+PUT http://localhost:8080/usuarios/1
+Content-Type: application/json
+
+{
+  "nome": "Jefferson Matheus Ferreira de Lima",
+  "email": "email@teste.com.br",
+  "cargo": "Suporte Tecnico 1"
+}
+
+###
+DELETE http://localhost:8080/usuarios/1
+
+###
+GET http://localhost:8080/usuarios/1

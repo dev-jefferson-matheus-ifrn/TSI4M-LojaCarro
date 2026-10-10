@@ -15,8 +15,8 @@ public class LogService {
     @Autowired
     private LogRepository logRepository;
 
-    public void registarLog(LocalDate dataOperacao, String operacaoRealizada, Long idUsuario) {
-        Log log = new Log(dataOperacao, operacaoRealizada,idUsuario);
+    public void registarLog(LocalDate dataOperacao, String operacaoRealizada, Long idUsuario, String url) {
+        Log log = new Log(dataOperacao, operacaoRealizada,idUsuario,url);
 
         logRepository.save(log);
     }
