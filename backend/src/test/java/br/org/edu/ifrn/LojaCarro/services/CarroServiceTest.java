@@ -27,11 +27,6 @@ public class CarroServiceTest {
 
 
     @Test
-    public void findAll() {
-
-    }
-
-    @Test
     public void deleteById() {
         Long id = Long.valueOf(-3);
 
